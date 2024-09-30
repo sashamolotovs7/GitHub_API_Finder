@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { searchGithub, searchGithubUser, checkRateLimit } from "../api/API";
 import { Candidate } from "../interfaces/Candidate.interface";
+import '../index.css'; // Import external CSS for styling
 
 const CandidateSearch = () => {
   const [candidate, setCandidate] = useState<Candidate | null>(null);
@@ -60,34 +61,42 @@ const CandidateSearch = () => {
   };
 
   return (
-    <div>
+    <div className="candidate-container">
       {/* Search section */}
-      <div>
+      <div className="search-section">
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Search GitHub user by username"
         />
-        <button onClick={handleSearch}>Search</button>
+        <button className="search-button" onClick={handleSearch}>Search</button>
       </div>
 
-      {searchError && <p style={{ color: "red" }}>{searchError}</p>} {/* Display search error if any */}
+      {searchError && <p className="error-text">{searchError}</p>} {/* Display search error if any */}
 
       {/* Candidate display */}
       {candidate ? (
-        <div>
-          <img src={candidate.avatar_url} alt={candidate.name} width="150" />
-          <h1>{candidate.name}</h1>
-          <p>Username: {candidate.login}</p>
-          <p>Location: {candidate.location || "N/A"}</p>
-          <p>Email: {candidate.email || "N/A"}</p>
-          <p>Company: {candidate.company || "N/A"}</p>
-          <a href={candidate.html_url}>GitHub Profile</a>
-          <br />
-          <button onClick={handleSave}>+</button>
-          <button onClick={handleSkip}>-</button>
-        </div>
+        <>
+          <div className="candidate-box">
+            <img src={candidate.avatar_url} alt={candidate.name} className="candidate-avatar" />
+            <h1>{candidate.name}</h1>
+            <p>Username: {candidate.login}</p>
+            <p>Location: {candidate.location || "N/A"}</p>
+            <p>Email: {candidate.email || "N/A"}</p>
+            <p>Company: {candidate.company || "N/A"}</p>
+            <p>Bio: {candidate.bio || "No bio available"}</p> {/* Display the Bio */}
+          </div>
+
+          {/* GitHub Profile and Save/Skip Buttons outside the box */}
+          <div className="action-section">
+            <a href={candidate.html_url} target="_blank" rel="noopener noreferrer">GitHub Profile</a>
+            <div className="icon-buttons-container">
+              <button className="icon-button green-circle" onClick={handleSave}>+</button>
+              <button className="icon-button red-circle" onClick={handleSkip}>-</button>
+            </div>
+          </div>
+        </>
       ) : (
         <h2>No more candidates available</h2>
       )}

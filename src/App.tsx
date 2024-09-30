@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 function App() {
   return (
     <>
+      {/* Nav is rendered once here */}
       <Nav />
       <main>
         <Outlet />
